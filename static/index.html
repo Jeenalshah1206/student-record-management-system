@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record System | Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f5ec;
+            color: #687acd;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #687acd;
+            color: #fffdf4;
+            padding: 30px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #d8c68b;
+            font-size: 12px;
+            margin-bottom: 38px;
+        }
+
+        .nav-title {
+            color: #c8d5cc;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 22px 12px 12px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #f4f1e5;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin-bottom: 7px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #091651;
+            color: #f0d58b;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+            min-width: 0;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .topbar h1 {
+            font-size: 29px;
+            margin-bottom: 8px;
+        }
+
+        .topbar p {
+            color: #6b796e;
+        }
+
+        .date {
+            background: #fffdf6;
+            border: 1px solid #e8e0cb;
+            padding: 12px 18px;
+            border-radius: 10px;
+            color: #090f64;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #081e81, #a0adec);
+            color: white;
+            padding: 32px;
+            border-radius: 18px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome h2 {
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .welcome p {
+            color: #fbf9f9;
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .welcome .tag {
+            display: inline-block;
+            background: #e6cf8a;
+            color: #687acd;
+            font-weight: 600;
+            padding: 8px 13px;
+            border-radius: 7px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .section-heading {
+            font-size: 20px;
+            margin: 30px 0 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: #fffdf7;
+            border: 1px solid #e9e2d0;
+            border-radius: 15px;
+            padding: 23px;
+            box-shadow: 0 5px 18px rgba(29, 58, 39, 0.04);
+        }
+
+        .stat-card .icon {
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card p {
+            color: #778277;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .action-card {
+            background: #fffdf7;
+            border: 1px solid #e9e2d0;
+            border-radius: 14px;
+            padding: 22px;
+            text-decoration: none;
+            color: #214b37;
+            transition: 0.2s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #c6a75d;
+            box-shadow: 0 8px 20px rgba(29, 58, 39, 0.08);
+        }
+
+        .action-card h3 {
+            font-size: 17px;
+            margin-bottom: 9px;
+        }
+
+        .action-card p {
+            color: #758075;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .action-card span {
+            display: inline-block;
+            margin-top: 17px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #98752b;
+        }
+
+        .footer {
+            margin-top: 38px;
+            padding-top: 20px;
+            border-top: 1px solid #e5dfcf;
+            color: #7c8478;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 1000px) {
+            .stats, .actions {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 18px;
+            }
+
+            .nav-title {
+                margin-top: 15px;
+            }
+
+            .main {
+                padding: 22px 16px;
+            }
+
+            .stats, .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">✦ StudentSphere</div>
+        <div class="subtitle">STUDENT RECORD MANAGEMENT</div>
+
+        <div class="nav-title">Main Menu</div>
+        <a class="nav-link active" href="/">⌂ &nbsp; Dashboard</a>
+        <a class="nav-link" href="/view">▤ &nbsp; View Students</a>
+
+        <div class="nav-title">Manage Records</div>
+        <a class="nav-link" href="/add">＋ &nbsp; Add Student</a>
+        <a class="nav-link" href="/search">⌕ &nbsp; Search Student</a>
+        <a class="nav-link" href="/update">✎ &nbsp; Update Student</a>
+        <a class="nav-link" href="/delete">▤ &nbsp; Delete Student</a>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome to your student management workspace.</p>
+            </div>
+            <div class="date" id="currentDate">Loading date...</div>
+        </header>
+
+        <section class="welcome">
+            <h2>Manage Students Smarter.</h2>
+            <p>
+                Keep student information organised in one place.
+                Add new records, find student details, update information
+                and manage your database with ease.
+            </p>
+            <span class="tag">✦ Student Record System</span>
+        </section>
+
+        <h2 class="section-heading">Overview</h2>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="icon">♙</div>
+                <p>Total Students</p>
+                <h3 id="totalStudents">—</h3>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">▤</div>
+                <p>Courses Represented</p>
+                <h3 id="totalCourses">—</h3>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">★</div>
+                <p>Average Marks</p>
+                <h3 id="averageMarks">—</h3>
+            </div>
+        </section>
+
+        <h2 class="section-heading">Quick Actions</h2>
+
+        <section class="actions">
+            <a href="/add" class="action-card">
+                <h3>＋ Add Student</h3>
+                <p>Register a student and save their details.</p>
+                <span>Open page →</span>
+            </a>
+
+            <a href="/view" class="action-card">
+                <h3>▤ View Records</h3>
+                <p>Browse all student records stored in MySQL.</p>
+                <span>Open page →</span>
+            </a>
+
+            <a href="/search" class="action-card">
+                <h3>⌕ Find Student</h3>
+                <p>Search for an individual student by ID.</p>
+                <span>Open page →</span>
+            </a>
+
+            <a href="/update" class="action-card">
+                <h3>✎ Update Details</h3>
+                <p>Edit a student's existing information.</p>
+                <span>Open page →</span>
+            </a>
+
+            <a href="/delete" class="action-card">
+                <h3>▤ Delete Record</h3>
+                <p>Remove a student record after confirmation.</p>
+                <span>Open page →</span>
+            </a>
+
+            <a href="/docs" class="action-card">
+                <h3>⌘ API Documentation</h3>
+                <p>Test the FastAPI endpoints using Swagger.</p>
+                <span>Open API →</span>
+            </a>
+        </section>
+
+        <footer class="footer">
+            StudentSphere · Student Record Management System
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+
+    async function loadDashboard() {
+        try {
+            const response = await fetch("/students");
+
+            if (!response.ok) {
+                throw new Error("Could not load student records");
+            }
+
+            const students = await response.json();
+
+            const courses = new Set(
+                students.map(student => student.course)
+            );
+
+            const average = students.length
+                ? students.reduce(
+                    (sum, student) => sum + Number(student.marks), 0
+                  ) / students.length
+                : 0;
+
+            document.getElementById("totalStudents").textContent =
+                students.length;
+
+            document.getElementById("totalCourses").textContent =
+                courses.size;
+
+            document.getElementById("averageMarks").textContent =
+                average.toFixed(1) + "%";
+
+        } catch (error) {
+            document.getElementById("totalStudents").textContent = "—";
+            document.getElementById("totalCourses").textContent = "—";
+            document.getElementById("averageMarks").textContent = "—";
+
+            console.error("Dashboard error:", error);
+        }
+    }
+
+    loadDashboard();
+</script>
+
+</body>
+</html>
+```

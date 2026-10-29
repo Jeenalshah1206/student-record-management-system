@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student | StudentSphere</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f5ec;
+            color: #112375;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 245px;
+            height: 100vh;
+            background: #687acd;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .brand span {
+            color: #d8c68b;
+        }
+
+        .subtitle {
+            color: #c4d3c9;
+            font-size: 12px;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #e8eee8;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin: 7px 0;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #03023c;
+            color: #f1d990;
+        }
+
+        main {
+            margin-left: 245px;
+            padding: 38px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .muted {
+            color: #78877c;
+            font-size: 14px;
+        }
+
+        .badge {
+            background: #e8e0c2;
+            color: #041754;
+            border-radius: 20px;
+            padding: 9px 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e8e5d9;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(23, 63, 50, 0.05);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            max-width: 650px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 16px;
+            border: 1px solid #dcded4;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            background: #fffefb;
+        }
+
+        input:focus {
+            border-color: #315b49;
+            box-shadow: 0 0 0 3px rgba(49, 91, 73, 0.1);
+        }
+
+        button,
+        .action {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .primary {
+            background: #0a116c;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #3864b6;
+        }
+
+        .gold {
+            background: #e8d99e;
+            color: #173f32;
+        }
+
+        .danger {
+            background: #f8e5df;
+            color: #a33d2c;
+        }
+
+        .message {
+            margin-top: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            color: #b33c2d;
+        }
+
+        .success {
+            color: #28744b;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .student-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #e8e0c2;
+            color: #173f32;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .student-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .detail-box {
+            padding: 18px;
+            background: #f8f7f1;
+            border-radius: 12px;
+            border: 1px solid #eeece3;
+        }
+
+        .detail-label {
+            color: #78877c;
+            font-size: 12px;
+            margin-bottom: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 19px;
+            font-weight: 650;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 15px;
+            }
+
+            .nav-link {
+                display: inline-block;
+                padding: 10px;
+                margin: 3px;
+                font-size: 13px;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 22px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">Student<span>Sphere</span></div>
+        <p class="subtitle">STUDENT MANAGEMENT SYSTEM</p>
+
+        <nav>
+            <a href="/" class="nav-link">▦ Dashboard</a>
+            <a href="/view" class="nav-link">☷ All Students</a>
+            <a href="/add" class="nav-link">＋ Add Student</a>
+            <a href="/search" class="nav-link active">⌕ Search Student</a>
+            <a href="/update" class="nav-link">✎ Update Student</a>
+            <a href="/delete" class="nav-link">✕ Delete Student</a>
+            <a href="/docs" class="nav-link">⚙ API Documentation</a>
+        </nav>
+    </aside>
+
+    <main>
+        <header class="topbar">
+            <div>
+                <h1>Search Student</h1>
+                <p class="muted">Find student records using their unique ID.</p>
+            </div>
+            <span class="badge">Student Directory</span>
+        </header>
+
+        <section class="card">
+            <h2>Find a student</h2>
+            <p class="muted">Enter the student ID to view their complete details.</p>
+
+            <form class="search-form" id="searchForm">
+                <input
+                    type="number"
+                    id="studentId"
+                    placeholder="Enter Student ID (e.g. 1)"
+                    min="1"
+                    step="1"
+                    required
+                >
+                <button type="submit" class="primary" id="searchButton">
+                    Search Student
+                </button>
+            </form>
+
+            <p id="message" class="message" role="status"></p>
+        </section>
+
+        <section class="card result" id="resultCard">
+            <div class="result-header">
+                <div class="student-heading">
+                    <div class="student-icon">S</div>
+                    <div>
+                        <h2 id="studentName">Student Name</h2>
+                        <p class="muted" id="studentSubtitle">Student details</p>
+                    </div>
+                </div>
+                <span class="badge" id="studentBadge">Student Record</span>
+            </div>
+
+            <div class="details">
+                <div class="detail-box">
+                    <div class="detail-label">Student ID</div>
+                    <div class="detail-value" id="detailId">—</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value" id="detailName">—</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Age</div>
+                    <div class="detail-value" id="detailAge">—</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Course</div>
+                    <div class="detail-value" id="detailCourse">—</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Marks</div>
+                    <div class="detail-value" id="detailMarks">—</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="/update" class="action primary" id="updateLink">
+                    ✎ Update Details
+                </a>
+
+                <a href="/delete" class="action danger" id="deleteLink">
+                    ✕ Delete Student
+                </a>
+
+                <a href="/view" class="action gold">
+                    View All Students
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const searchForm = document.getElementById("searchForm");
+        const studentIdInput = document.getElementById("studentId");
+        const message = document.getElementById("message");
+        const resultCard = document.getElementById("resultCard");
+        const searchButton = document.getElementById("searchButton");
+
+        async function searchStudent(id) {
+            message.textContent = "";
+            message.className = "message";
+            resultCard.style.display = "none";
+            searchButton.disabled = true;
+            searchButton.textContent = "Searching...";
+
+            try {
+                const response = await fetch(`/students/${id}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || "Unable to find student.");
+                }
+
+                document.getElementById("studentName").textContent = data.name;
+                document.getElementById("studentSubtitle").textContent =
+                    `Record found for student ID ${data.id}`;
+
+                document.getElementById("detailId").textContent = data.id;
+                document.getElementById("detailName").textContent = data.name;
+                document.getElementById("detailAge").textContent = data.age;
+                document.getElementById("detailCourse").textContent = data.course;
+                document.getElementById("detailMarks").textContent =
+                    `${Number(data.marks).toFixed(2)} / 100`;
+
+                document.getElementById("updateLink").href =
+                    `/update?id=${encodeURIComponent(data.id)}`;
+
+                document.getElementById("deleteLink").href =
+                    `/delete?id=${encodeURIComponent(data.id)}`;
+
+                resultCard.style.display = "block";
+                message.textContent = "Student record found successfully.";
+                message.className = "message success";
+
+            } catch (error) {
+                message.textContent = error.message;
+                message.className = "message error";
+            } finally {
+                searchButton.disabled = false;
+                searchButton.textContent = "Search Student";
+            }
+        }
+
+        searchForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const id = Number(studentIdInput.value);
+
+            if (!Number.isInteger(id) || id <= 0) {
+                message.textContent = "Please enter a valid positive student ID.";
+                message.className = "message error";
+                resultCard.style.display = "none";
+                return;
+            }
+
+            searchStudent(id);
+        });
+
+        // Automatically search when the page opens with /search?id=1
+        const params = new URLSearchParams(window.location.search);
+        const existingId = params.get("id");
+
+        if (existingId && /^\d+$/.test(existingId) && Number(existingId) > 0) {
+            studentIdInput.value = existingId;
+            searchStudent(Number(existingId));
+        }
+    </script>
+
+</body>
+</html>

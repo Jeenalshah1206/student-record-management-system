@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student | StudentSphere</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f5ec;
+            color: #233b30;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 245px;
+            height: 100vh;
+            background: #687acd;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .brand span {
+            color: #d8c68b;
+        }
+
+        .subtitle {
+            color: #c4d3c9;
+            font-size: 12px;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #e8eee8;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin: 7px 0;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #0b0e68;
+            color: #f1d990;
+        }
+
+        main {
+            margin-left: 245px;
+            padding: 38px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .muted {
+            color: #78877c;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            background: #e8e0c2;
+            color: #173f32;
+            border-radius: 20px;
+            padding: 9px 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e8e5d9;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(23, 63, 50, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            max-width: 650px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dcded4;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background: #fffefb;
+        }
+
+        input:focus {
+            border-color: #315b49;
+            box-shadow: 0 0 0 3px rgba(49, 91, 73, 0.1);
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 9px;
+            color: #405448;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        button,
+        .action {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 19px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .primary {
+            background: #17065a;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #4453ca;
+        }
+
+        .gold {
+            background: #e8d99e;
+            color: #173f32;
+        }
+
+        .message {
+            margin-top: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .success {
+            color: #28744b;
+        }
+
+        .error {
+            color: #b33c2d;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .note {
+            background: #f8f7f1;
+            border: 1px solid #eeece3;
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 18px;
+            font-size: 13px;
+            color: #657468;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 15px;
+            }
+
+            .nav-link {
+                display: inline-block;
+                padding: 10px;
+                margin: 3px;
+                font-size: 13px;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 22px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">Student<span>Sphere</span></div>
+        <p class="subtitle">STUDENT MANAGEMENT SYSTEM</p>
+
+        <nav>
+            <a href="/" class="nav-link">▦ Dashboard</a>
+            <a href="/view" class="nav-link">☷ All Students</a>
+            <a href="/add" class="nav-link">＋ Add Student</a>
+            <a href="/search" class="nav-link">⌕ Search Student</a>
+            <a href="/update" class="nav-link active">✎ Update Student</a>
+            <a href="/delete" class="nav-link">✕ Delete Student</a>
+            <a href="/docs" class="nav-link">⚙ API Documentation</a>
+        </nav>
+    </aside>
+
+    <main>
+        <header class="topbar">
+            <div>
+                <h1>Update Student</h1>
+                <p class="muted">Find an existing student and edit their information.</p>
+            </div>
+            <span class="badge">Edit Records</span>
+        </header>
+
+        <section class="card">
+            <h2>Find Student</h2>
+            <p class="muted">Enter the ID of the student whose details you want to update.</p>
+
+            <form class="search-row" id="searchForm">
+                <input
+                    type="number"
+                    id="studentId"
+                    placeholder="Enter Student ID"
+                    min="1"
+                    step="1"
+                    required
+                >
+                <button type="submit" class="primary" id="loadButton">
+                    Load Details
+                </button>
+            </form>
+
+            <p id="searchMessage" class="message" role="status"></p>
+        </section>
+
+        <section class="card form-section" id="formSection">
+            <h2>Edit Student Information</h2>
+            <p class="muted" id="recordSubtitle">Update the required fields below.</p>
+
+            <form id="updateForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="name">Full Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            maxlength="100"
+                            placeholder="Enter student name"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="age">Age</label>
+                        <input
+                            type="number"
+                            id="age"
+                            min="1"
+                            max="120"
+                            step="1"
+                            placeholder="Enter age"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="course">Course</label>
+                        <input
+                            type="text"
+                            id="course"
+                            maxlength="100"
+                            placeholder="Enter course"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="marks">Marks (out of 100)</label>
+                        <input
+                            type="number"
+                            id="marks"
+                            min="0"
+                            max="100"
+                            step="any"
+                            placeholder="Enter marks"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="note">
+                    Please verify the details before saving. Changes will be
+                    stored in your MySQL database.
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary" id="saveButton">
+                        Save Changes
+                    </button>
+
+                    <button type="button" class="gold" id="resetButton">
+                        Reset Form
+                    </button>
+
+                    <a href="/view" class="action gold">
+                        View All Students
+                    </a>
+                </div>
+
+                <p id="updateMessage" class="message" role="status"></p>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const studentIdInput = document.getElementById("studentId");
+        const searchForm = document.getElementById("searchForm");
+        const updateForm = document.getElementById("updateForm");
+        const formSection = document.getElementById("formSection");
+
+        const searchMessage = document.getElementById("searchMessage");
+        const updateMessage = document.getElementById("updateMessage");
+
+        const loadButton = document.getElementById("loadButton");
+        const saveButton = document.getElementById("saveButton");
+
+        let loadedStudentId = null;
+
+        function showMessage(element, text, type) {
+            element.textContent = text;
+            element.className = `message ${type}`;
+        }
+
+        async function loadStudent(id) {
+            formSection.style.display = "none";
+            loadedStudentId = null;
+
+            showMessage(searchMessage, "", "");
+            showMessage(updateMessage, "", "");
+
+            loadButton.disabled = true;
+            loadButton.textContent = "Loading...";
+
+            try {
+                const response = await fetch(`/students/${id}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || "Student not found.");
+                }
+
+                studentIdInput.value = data.id;
+                document.getElementById("name").value = data.name;
+                document.getElementById("age").value = data.age;
+                document.getElementById("course").value = data.course;
+                document.getElementById("marks").value = data.marks;
+
+                document.getElementById("recordSubtitle").textContent =
+                    `Editing student ID: ${data.id}`;
+
+                loadedStudentId = data.id;
+                formSection.style.display = "block";
+
+                showMessage(
+                    searchMessage,
+                    `Student "${data.name}" loaded successfully.`,
+                    "success"
+                );
+            } catch (error) {
+                showMessage(searchMessage, error.message, "error");
+            } finally {
+                loadButton.disabled = false;
+                loadButton.textContent = "Load Details";
+            }
+        }
+
+        searchForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const id = Number(studentIdInput.value);
+
+            if (!Number.isInteger(id) || id <= 0) {
+                showMessage(searchMessage, "Enter a valid student ID.", "error");
+                return;
+            }
+
+            await loadStudent(id);
+        });
+
+        updateForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            if (loadedStudentId === null) {
+                showMessage(updateMessage, "Load a student before updating.", "error");
+                return;
+            }
+
+            const student = {
+                name: document.getElementById("name").value.trim(),
+                age: Number(document.getElementById("age").value),
+                course: document.getElementById("course").value.trim(),
+                marks: Number(document.getElementById("marks").value)
+            };
+
+            if (!student.name || !student.course) {
+                showMessage(updateMessage, "Name and course are required.", "error");
+                return;
+            }
+
+            if (!Number.isInteger(student.age) || student.age < 1 || student.age > 120) {
+                showMessage(updateMessage, "Age must be between 1 and 120.", "error");
+                return;
+            }
+
+            if (!Number.isFinite(student.marks) || student.marks < 0 || student.marks > 100) {
+                showMessage(updateMessage, "Marks must be between 0 and 100.", "error");
+                return;
+            }
+
+            saveButton.disabled = true;
+            saveButton.textContent = "Saving...";
+
+            try {
+                const response = await fetch(`/students/${loadedStudentId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(student)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || "Unable to update student.");
+                }
+
+                showMessage(
+                    updateMessage,
+                    `Student ID ${loadedStudentId} updated successfully!`,
+                    "success"
+                );
+
+                document.getElementById("recordSubtitle").textContent =
+                    `Latest details for student ID: ${loadedStudentId}`;
+            } catch (error) {
+                showMessage(updateMessage, error.message, "error");
+            } finally {
+                saveButton.disabled = false;
+                saveButton.textContent = "Save Changes";
+            }
+        });
+
+        document.getElementById("resetButton").addEventListener("click", function() {
+            if (loadedStudentId !== null) {
+                loadStudent(loadedStudentId);
+            } else {
+                updateForm.reset();
+                showMessage(updateMessage, "", "");
+            }
+        });
+
+        // Supports links such as /update?id=5
+        const params = new URLSearchParams(window.location.search);
+        const initialId = params.get("id");
+
+        if (initialId && /^\d+$/.test(initialId) && Number(initialId) > 0) {
+            studentIdInput.value = initialId;
+            loadStudent(Number(initialId));
+        }
+    </script>
+
+</body>
+</html>

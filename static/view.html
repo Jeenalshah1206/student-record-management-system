@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Students | StudentSphere</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f5ec;
+            color: #687acd;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: #687acd;
+            color: #fffdf4;
+            padding: 30px 18px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #d8c68b;
+            font-size: 11px;
+            margin-bottom: 38px;
+        }
+
+        .nav-title {
+            color: #c8d5cc;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 22px 12px 12px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #f4f1e5;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin-bottom: 7px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #0e1d68;
+            color: #f0d58b;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 29px;
+            margin-bottom: 8px;
+        }
+
+        .muted {
+            color: #748075;
+            font-size: 14px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #060f3a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d3862;
+        }
+
+        .btn-gold {
+            background: #e22121;
+            color: #160227;
+        }
+
+        .btn-danger {
+            background: #f8e7e2;
+            color: #a33d32;
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+        .summary-card {
+            background: #fffdf7;
+            border: 1px solid #e9e2d0;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .summary-card p {
+            color: #748075;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h2 {
+            font-size: 28px;
+        }
+
+        .summary-icon {
+            font-size: 32px;
+        }
+
+        .table-card {
+            background: #fffdf7;
+            border: 1px solid #e9e2d0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .table-header h2 {
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        .search {
+            width: 280px;
+            max-width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dedccf;
+            border-radius: 8px;
+            background: #fffefb;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search:focus {
+            border-color: #688c6d;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        thead {
+            background: #edf1e8;
+        }
+
+        th {
+            text-align: left;
+            color: #385844;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #eeeadd;
+        }
+
+        td {
+            font-size: 14px;
+            color: #3e5144;
+        }
+
+        tbody tr:hover {
+            background: #faf8f0;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #214b37;
+        }
+
+        .marks {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #e8f0e5;
+            color: #28563a;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .message {
+            padding: 24px;
+            text-align: center;
+            color: #738074;
+        }
+
+        .error {
+            color: #a33d32;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px 10px;
+            color: #7c8478;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 18px;
+            }
+
+            .main {
+                padding: 22px 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .table-header {
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">✦ StudentSphere</div>
+        <div class="subtitle">STUDENT RECORD MANAGEMENT</div>
+
+        <div class="nav-title">Main Menu</div>
+        <a class="nav-link" href="/">⌂ &nbsp; Dashboard</a>
+        <a class="nav-link active" href="/view">▤ &nbsp; View Students</a>
+
+        <div class="nav-title">Manage Records</div>
+        <a class="nav-link" href="/add">＋ &nbsp; Add Student</a>
+        <a class="nav-link" href="/search">⌕ &nbsp; Search Student</a>
+        <a class="nav-link" href="/update">✎ &nbsp; Update Student</a>
+        <a class="nav-link" href="/delete">▤ &nbsp; Delete Student</a>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>All Students</h1>
+                <p class="muted">View and manage student records from your database.</p>
+            </div>
+
+            <div>
+                <button class="btn btn-gold" onclick="loadStudents()">
+                    ↻ Refresh
+                </button>
+                <a href="/add" class="btn btn-primary">+ Add Student</a>
+            </div>
+        </header>
+
+        <section class="summary-card">
+            <div>
+                <p>Total Student Records</p>
+                <h2 id="totalCount">—</h2>
+            </div>
+            <div class="summary-icon">♙</div>
+        </section>
+
+        <section class="table-card">
+            <div class="table-header">
+                <div>
+                    <h2>Student Directory</h2>
+                    <p class="muted">Search by name, ID, course or marks.</p>
+                </div>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    class="search"
+                    placeholder="Search student records..."
+                    oninput="filterStudents()"
+                    aria-label="Search students"
+                >
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student Name</th>
+                            <th>Age</th>
+                            <th>Course</th>
+                            <th>Marks</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentTable">
+                        <tr>
+                            <td colspan="6" class="message">
+                                Loading student records...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="statusMessage" class="message" role="status"></div>
+        </section>
+
+        <footer class="footer">
+            StudentSphere · Student Record Management System
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    let students = [];
+
+    // Escape database text before inserting it into HTML.
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+    async function loadStudents() {
+        const table = document.getElementById("studentTable");
+        const status = document.getElementById("statusMessage");
+
+        table.innerHTML = `
+            <tr><td colspan="6" class="message">Loading records...</td></tr>
+        `;
+        status.textContent = "";
+
+        try {
+            const response = await fetch("/students");
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch student records.");
+            }
+
+            students = await response.json();
+            document.getElementById("totalCount").textContent = students.length;
+
+            filterStudents();
+        } catch (error) {
+            table.innerHTML = `
+                <tr><td colspan="6" class="message error">
+                    Failed to load records. Check that FastAPI and MySQL are running.
+                </td></tr>
+            `;
+            document.getElementById("totalCount").textContent = "—";
+            status.textContent = error.message;
+        }
+    }
+
+    function filterStudents() {
+        const query = document.getElementById("searchInput")
+            .value.trim().toLowerCase();
+
+        const filtered = students.filter(student =>
+            String(student.id).includes(query) ||
+            String(student.name).toLowerCase().includes(query) ||
+            String(student.course).toLowerCase().includes(query) ||
+            String(student.age).includes(query) ||
+            String(student.marks).includes(query)
+        );
+
+        renderStudents(filtered);
+    }
+
+    function renderStudents(records) {
+        const table = document.getElementById("studentTable");
+
+        if (records.length === 0) {
+            table.innerHTML = `
+                <tr><td colspan="6" class="message">
+                    No matching student records found.
+                </td></tr>
+            `;
+            return;
+        }
+
+        table.innerHTML = records.map(student => `
+            <tr>
+                <td>#${escapeHTML(student.id)}</td>
+                <td class="student-name">${escapeHTML(student.name)}</td>
+                <td>${escapeHTML(student.age)}</td>
+                <td>${escapeHTML(student.course)}</td>
+                <td><span class="marks">${escapeHTML(student.marks)}%</span></td>
+                <td>
+                    <a class="btn btn-small btn-gold"
+                       href="/update?id=${encodeURIComponent(student.id)}">
+                       Edit
+                    </a>
+
+                    <a class="btn btn-small btn-danger"
+                       href="/delete?id=${encodeURIComponent(student.id)}">
+                       Delete
+                    </a>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    loadStudents();
+</script>
+
+</body>
+</html>

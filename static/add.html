@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student | StudentSphere</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f5ec;
+            color: #687acd;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: #687acd;
+            color: #fffdf4;
+            padding: 30px 18px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #d8c68b;
+            font-size: 11px;
+            margin-bottom: 38px;
+        }
+
+        .nav-title {
+            color: #c8d5cc;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 22px 12px 12px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #f4f1e5;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin-bottom: 7px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #030c32;
+            color: #f0d58b;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topbar {
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 29px;
+            margin-bottom: 8px;
+        }
+
+        .muted {
+            color: #748075;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-card {
+            max-width: 800px;
+            background: #fffdf7;
+            border: 1px solid #e9e2d0;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(29, 58, 39, 0.04);
+        }
+
+        .form-heading {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeadd;
+            margin-bottom: 25px;
+        }
+
+        .form-heading h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #345441;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dedccf;
+            background: #fffefb;
+            border-radius: 9px;
+            outline: none;
+            color: #0b0d67;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #688c6d;
+            box-shadow: 0 0 0 3px rgba(104, 140, 109, 0.12);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #81877d;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #eeeadd;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #090f43;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0b022b;
+        }
+
+        .btn-secondary {
+            background: #eeeadd;
+            color: #345441;
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 14px 16px;
+            margin-top: 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .success {
+            display: block;
+            background: #e8f3e6;
+            color: #285b37;
+        }
+
+        .error {
+            display: block;
+            background: #f9e8e3;
+            color: #9e382d;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 10px;
+            color: #7c8478;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 18px;
+            }
+
+            .main {
+                padding: 22px 14px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">✦ StudentSphere</div>
+        <div class="subtitle">STUDENT RECORD MANAGEMENT</div>
+
+        <div class="nav-title">Main Menu</div>
+        <a class="nav-link" href="/">⌂ &nbsp; Dashboard</a>
+        <a class="nav-link" href="/view">▤ &nbsp; View Students</a>
+
+        <div class="nav-title">Manage Records</div>
+        <a class="nav-link active" href="/add">＋ &nbsp; Add Student</a>
+        <a class="nav-link" href="/search">⌕ &nbsp; Search Student</a>
+        <a class="nav-link" href="/update">✎ &nbsp; Update Student</a>
+        <a class="nav-link" href="/delete">▤ &nbsp; Delete Student</a>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h1>Add New Student</h1>
+            <p class="muted">
+                Enter the student's details below to create a new record.
+            </p>
+        </header>
+
+        <section class="form-card">
+            <div class="form-heading">
+                <h2>Student Information</h2>
+                <p class="muted">All fields are required.</p>
+            </div>
+
+            <form id="studentForm">
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="name">Full Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter student's full name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="age">Age</label>
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            placeholder="Enter age"
+                            min="1"
+                            max="120"
+                            required
+                        >
+                        <span class="hint">Age must be between 1 and 120.</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="course">Course</label>
+                        <input
+                            type="text"
+                            id="course"
+                            name="course"
+                            placeholder="e.g. B.Tech CSE"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="marks">Marks (%)</label>
+                        <input
+                            type="number"
+                            id="marks"
+                            name="marks"
+                            placeholder="Enter marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            required
+                        >
+                        <span class="hint">Marks must be between 0 and 100.</span>
+                    </div>
+
+                </div>
+
+                <div id="message" class="message" role="status"></div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Save Student
+                    </button>
+
+                    <button type="reset" class="btn btn-secondary">
+                        Clear Form
+                    </button>
+
+                    <a href="/view" class="btn btn-secondary">
+                        View Students
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <footer class="footer">
+            StudentSphere · Student Record Management System
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    const form = document.getElementById("studentForm");
+    const message = document.getElementById("message");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = "message " + type;
+    }
+
+    form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const student = {
+            name: document.getElementById("name").value.trim(),
+            age: Number(document.getElementById("age").value),
+            course: document.getElementById("course").value.trim(),
+            marks: Number(document.getElementById("marks").value)
+        };
+
+        if (!student.name || !student.course) {
+            showMessage("Please fill in all fields.", "error");
+            return;
+        }
+
+        if (student.age < 1 || student.age > 120) {
+            showMessage("Age must be between 1 and 120.", "error");
+            return;
+        }
+
+        if (student.marks < 0 || student.marks > 100) {
+            showMessage("Marks must be between 0 and 100.", "error");
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Saving...";
+
+        try {
+            const response = await fetch("/students", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(student)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                const detail = result.detail;
+                throw new Error(
+                    typeof detail === "string"
+                        ? detail
+                        : "Unable to save student. Please check the entered details."
+                );
+            }
+
+            showMessage(
+                "Student added successfully! Student ID: " + result.id,
+                "success"
+            );
+
+            form.reset();
+
+        } catch (error) {
+            showMessage(error.message, "error");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Save Student";
+        }
+    });
+
+    form.addEventListener("reset", function() {
+        message.textContent = "";
+        message.className = "message";
+    });
+</script>
+
+</body>
+</html>
