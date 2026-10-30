@@ -1,51 +1,63 @@
+
+import os
+from pathlib import Path
+
+import mysql.connector
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-import mysql.connector
+
+
+# -------------------- APPLICATION SETUP --------------------
 
 app = FastAPI(title="Student Record System")
 
-# -------------------- STATIC FILES --------------------
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR / "static"
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory=str(STATIC_DIR)),
+    name="static"
+)
 
 
 # -------------------- DIFFERENT WEB PAGES --------------------
 
 @app.get("/", include_in_schema=False)
 def home_page():
-    return FileResponse("static/index.html")
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/ui", include_in_schema=False)
 def dashboard_page():
-    return FileResponse("static/index.html")
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/view", include_in_schema=False)
 def view_page():
-    return FileResponse("static/view.html")
+    return FileResponse(STATIC_DIR / "view.html")
 
 
 @app.get("/add", include_in_schema=False)
 def add_page():
-    return FileResponse("static/add.html")
+    return FileResponse(STATIC_DIR / "add.html")
 
 
 @app.get("/search", include_in_schema=False)
 def search_page():
-    return FileResponse("static/search.html")
+    return FileResponse(STATIC_DIR / "search.html")
 
 
 @app.get("/update", include_in_schema=False)
 def update_page():
-    return FileResponse("static/update.html")
+    return FileResponse(STATIC_DIR / "update.html")
 
 
 @app.get("/delete", include_in_schema=False)
 def delete_page():
-    return FileResponse("static/delete.html")
+    return FileResponse(STATIC_DIR / "delete.html")
 
 
 # -------------------- MYSQL DATABASE CONNECTION --------------------
@@ -53,11 +65,13 @@ def delete_page():
 def get_connection():
     try:
         return mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="student_db"
+            host=os.getenv("DB_HOST", "localhost"),
+            port=int(os.getenv("DB_PORT", "3306")),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", "root"),
+            database=os.getenv("DB_NAME", "student_db")
         )
+
     except mysql.connector.Error as e:
         raise HTTPException(
             status_code=500,
@@ -78,23 +92,33 @@ class Student(BaseModel):
 
 @app.get("/api")
 def api_home():
-    return {"message": "Welcome to Student Record System API"}
+    return {
+        "message": "Welcome to Student Record System API"
+    }
 
 
 # -------------------- READ: GET ALL STUDENTS --------------------
 
 @app.get("/students")
 def get_students():
+
     con = get_connection()
     cur = None
 
     try:
         cur = con.cursor(dictionary=True)
-        cur.execute("SELECT * FROM students ORDER BY id DESC")
+
+        cur.execute(
+            "SELECT * FROM students ORDER BY id DESC"
+        )
+
         return cur.fetchall()
 
     except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
     finally:
         if cur:
@@ -106,15 +130,18 @@ def get_students():
 
 @app.get("/students/{student_id}")
 def get_student(student_id: int):
+
     con = get_connection()
     cur = None
 
     try:
         cur = con.cursor(dictionary=True)
+
         cur.execute(
             "SELECT * FROM students WHERE id = %s",
             (student_id,)
         )
+
         student = cur.fetchone()
 
         if student is None:
@@ -129,7 +156,10 @@ def get_student(student_id: int):
         raise
 
     except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
     finally:
         if cur:
@@ -141,6 +171,7 @@ def get_student(student_id: int):
 
 @app.post("/students", status_code=201)
 def add_student(student: Student):
+
     con = get_connection()
     cur = None
 
@@ -172,7 +203,11 @@ def add_student(student: Student):
 
     except mysql.connector.Error as e:
         con.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
     finally:
         if cur:
@@ -184,6 +219,7 @@ def add_student(student: Student):
 
 @app.put("/students/{student_id}")
 def update_student(student_id: int, student: Student):
+
     con = get_connection()
     cur = None
 
@@ -206,6 +242,7 @@ def update_student(student_id: int, student: Student):
         )
 
         if cur.rowcount == 0:
+
             cur.execute(
                 "SELECT id FROM students WHERE id = %s",
                 (student_id,)
@@ -231,7 +268,11 @@ def update_student(student_id: int, student: Student):
 
     except mysql.connector.Error as e:
         con.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
     finally:
         if cur:
@@ -243,6 +284,7 @@ def update_student(student_id: int, student: Student):
 
 @app.delete("/students/{student_id}")
 def delete_student(student_id: int):
+
     con = get_connection()
     cur = None
 
@@ -273,7 +315,11 @@ def delete_student(student_id: int):
 
     except mysql.connector.Error as e:
         con.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
     finally:
         if cur:
